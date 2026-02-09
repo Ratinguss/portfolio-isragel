@@ -24,10 +24,11 @@ class SalesDashboard {
             if (!this.currentData) {
                 this.loadDemoData();
             }
-            // Auto-scroll to make dashboard visible
+            // Auto-scroll to make dashboard visible after modal animation completes
+            const MODAL_ANIMATION_DELAY = 100; // Wait for modal fade-in animation
             setTimeout(() => {
                 modal.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            }, MODAL_ANIMATION_DELAY);
         });
 
         // Close modal

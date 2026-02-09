@@ -1253,7 +1253,7 @@ body {
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: var(--transition);
-    max-height: 250px;
+    max-height: 250px; /* Container includes title, padding, and canvas */
 }
 
 .chart-container:hover {
@@ -1278,7 +1278,7 @@ body {
 }
 
 .chart-container canvas {
-    max-height: 180px;
+    max-height: 180px; /* Chart height within container (leaves room for title and padding) */
 }
 
 @keyframes fadeIn {
