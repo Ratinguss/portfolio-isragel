@@ -437,18 +437,89 @@
 
             <div id="error-message" class="error-message" style="display: none;"></div>
 
+            <!-- KPI Cards -->
+            <div class="kpi-cards">
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h4 class="kpi-label">Total Revenue</h4>
+                        <p class="kpi-value" id="kpi-revenue">$127,450</p>
+                        <span class="kpi-trend positive">
+                            <i class="fas fa-arrow-up"></i> 12.5%
+                        </span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h4 class="kpi-label">Average Order Value</h4>
+                        <p class="kpi-value" id="kpi-aov">$85.30</p>
+                        <span class="kpi-trend positive">
+                            <i class="fas fa-arrow-up"></i> 5.2%
+                        </span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h4 class="kpi-label">Conversion Rate</h4>
+                        <p class="kpi-value" id="kpi-conversion">3.2%</p>
+                        <span class="kpi-trend positive">
+                            <i class="fas fa-arrow-up"></i> 0.8%
+                        </span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h4 class="kpi-label">Customer Acquisition Cost</h4>
+                        <p class="kpi-value" id="kpi-cac">$24.50</p>
+                        <span class="kpi-trend negative">
+                            <i class="fas fa-arrow-down"></i> 3.1%
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Charts and Tables -->
             <div class="dashboard-charts">
-                <div class="chart-container">
+                <div class="chart-container chart-large">
                     <h3 class="chart-title">Sales Trend</h3>
                     <canvas id="line-chart"></canvas>
                 </div>
                 <div class="chart-container">
-                    <h3 class="chart-title">Sales by Category</h3>
-                    <canvas id="bar-chart"></canvas>
+                    <h3 class="chart-title">Top Products</h3>
+                    <div class="products-table-wrapper">
+                        <table class="products-table" id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Units</th>
+                                    <th>Revenue</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-tbody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="chart-container">
-                    <h3 class="chart-title">Revenue Distribution</h3>
-                    <canvas id="pie-chart"></canvas>
+                    <h3 class="chart-title">Conversion Funnel</h3>
+                    <canvas id="funnel-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Traffic Sources</h3>
+                    <canvas id="traffic-chart"></canvas>
                 </div>
             </div>
         </div>

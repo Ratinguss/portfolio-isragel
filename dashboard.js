@@ -3,8 +3,8 @@ class SalesDashboard {
     constructor() {
         this.charts = {
             line: null,
-            bar: null,
-            pie: null
+            funnel: null,
+            traffic: null
         };
         this.currentData = null;
         this.init();
@@ -57,9 +57,11 @@ class SalesDashboard {
 
     showLoading(show) {
         const loadingState = document.getElementById('loading-state');
+        const kpiCards = document.querySelector('.kpi-cards');
         const charts = document.querySelector('.dashboard-charts');
         loadingState.style.display = show ? 'block' : 'none';
-        charts.style.display = show ? 'none' : 'grid';
+        if (kpiCards) kpiCards.style.display = show ? 'none' : 'grid';
+        if (charts) charts.style.display = show ? 'none' : 'grid';
     }
 
     showError(message) {
@@ -122,8 +124,8 @@ class SalesDashboard {
 
         // Generate charts based on available data
         this.generateLineChart(data, dateColumn, numericColumns);
-        this.generateBarChart(data, categoryColumns, numericColumns);
-        this.generatePieChart(data, categoryColumns, numericColumns);
+        this.generateFunnelChart();
+        this.generateTrafficChart();
     }
 
     detectColumnTypes(data, columns) {
@@ -201,7 +203,9 @@ class SalesDashboard {
                 borderColor: '#6366f1',
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
             }];
         } else if (numericColumns.length > 0) {
             // Use index as x-axis if no date column
@@ -213,7 +217,9 @@ class SalesDashboard {
                 borderColor: '#6366f1',
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
             }];
         } else {
             // Fallback: count entries
@@ -234,16 +240,25 @@ class SalesDashboard {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: { color: '#f1f5f9' }
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#f1f5f9',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#94a3b8' },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        ticks: { color: '#94a3b8', font: { size: 11 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', display: false }
                     },
                     y: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { color: '#94a3b8', font: { size: 11 } },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     }
                 }
@@ -251,161 +266,101 @@ class SalesDashboard {
         });
     }
 
-    generateBarChart(data, categoryColumns, numericColumns) {
-        const ctx = document.getElementById('bar-chart');
+    generateFunnelChart() {
+        const ctx = document.getElementById('funnel-chart');
         
-        if (this.charts.bar) {
-            this.charts.bar.destroy();
+        if (this.charts.funnel) {
+            this.charts.funnel.destroy();
         }
 
-        let labels = [];
-        let chartData = [];
+        // Funnel data
+        const labels = ['Visitors', 'Added to Cart', 'Checkout', 'Purchased'];
+        const data = [45000, 6750, 2250, 1440];
+        const percentages = ['100%', '15%', '5%', '3.2%'];
 
-        if (categoryColumns.length > 0 && numericColumns.length > 0) {
-            const categoryCol = categoryColumns[0];
-            const valueCol = numericColumns[0];
-
-            // Aggregate data by category
-            const aggregated = {};
-            data.forEach(row => {
-                const category = row[categoryCol];
-                const value = parseFloat(row[valueCol]) || 0;
-                if (category) {
-                    aggregated[category] = (aggregated[category] || 0) + value;
-                }
-            });
-
-            labels = Object.keys(aggregated).slice(0, 10); // Limit to top 10
-            chartData = labels.map(label => aggregated[label]);
-        } else if (categoryColumns.length > 0) {
-            // Count occurrences of categories
-            const categoryCol = categoryColumns[0];
-            const counts = {};
-            data.forEach(row => {
-                const category = row[categoryCol];
-                if (category) {
-                    counts[category] = (counts[category] || 0) + 1;
-                }
-            });
-
-            labels = Object.keys(counts).slice(0, 10);
-            chartData = labels.map(label => counts[label]);
-        } else {
-            // Fallback
-            labels = ['Total'];
-            chartData = [data.length];
-        }
-
-        this.charts.bar = new Chart(ctx, {
+        this.charts.funnel = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels,
+                labels: labels.map((label, i) => `${label} (${percentages[i]})`),
                 datasets: [{
-                    label: 'Value',
-                    data: chartData,
+                    label: 'Users',
+                    data: data,
                     backgroundColor: [
-                        'rgba(99, 102, 241, 0.8)',
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(139, 92, 246, 0.8)',
-                        'rgba(236, 72, 153, 0.8)',
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(34, 197, 94, 0.8)',
-                        'rgba(251, 146, 60, 0.8)',
-                        'rgba(168, 85, 247, 0.8)'
-                    ]
+                        'rgba(99, 102, 241, 0.9)',
+                        'rgba(99, 102, 241, 0.7)',
+                        'rgba(99, 102, 241, 0.5)',
+                        'rgba(99, 102, 241, 0.3)'
+                    ],
+                    borderColor: '#6366f1',
+                    borderWidth: 0,
+                    barThickness: 40
                 }]
             },
             options: {
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: { color: '#f1f5f9' }
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#f1f5f9',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                        borderWidth: 1,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.parsed.x.toLocaleString()} users`;
+                            }
+                        }
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { 
+                            color: '#94a3b8',
+                            font: { size: 11 },
+                            callback: function(value) {
+                                return value >= 1000 ? (value/1000).toFixed(1) + 'K' : value;
+                            }
+                        },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     },
                     y: {
-                        ticks: { color: '#94a3b8' },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        ticks: { color: '#94a3b8', font: { size: 11 } },
+                        grid: { display: false }
                     }
                 }
             }
         });
     }
 
-    generatePieChart(data, categoryColumns, numericColumns) {
-        const ctx = document.getElementById('pie-chart');
+    generateTrafficChart() {
+        const ctx = document.getElementById('traffic-chart');
         
-        if (this.charts.pie) {
-            this.charts.pie.destroy();
+        if (this.charts.traffic) {
+            this.charts.traffic.destroy();
         }
 
-        let labels = [];
-        let chartData = [];
+        const labels = ['Direct', 'Organic Search', 'Paid Ads', 'Social Media', 'Email', 'Referral'];
+        const data = [35, 28, 18, 12, 5, 2];
 
-        if (categoryColumns.length > 0 && numericColumns.length > 0) {
-            const categoryCol = categoryColumns[0];
-            const valueCol = numericColumns[0];
-
-            // Aggregate data by category
-            const aggregated = {};
-            data.forEach(row => {
-                const category = row[categoryCol];
-                const value = parseFloat(row[valueCol]) || 0;
-                if (category) {
-                    aggregated[category] = (aggregated[category] || 0) + value;
-                }
-            });
-
-            // Get top 6 categories
-            const sorted = Object.entries(aggregated)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 6);
-
-            labels = sorted.map(([label]) => label);
-            chartData = sorted.map(([, value]) => value);
-        } else if (categoryColumns.length > 0) {
-            // Count occurrences
-            const categoryCol = categoryColumns[0];
-            const counts = {};
-            data.forEach(row => {
-                const category = row[categoryCol];
-                if (category) {
-                    counts[category] = (counts[category] || 0) + 1;
-                }
-            });
-
-            const sorted = Object.entries(counts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 6);
-
-            labels = sorted.map(([label]) => label);
-            chartData = sorted.map(([, value]) => value);
-        } else {
-            // Fallback
-            labels = ['Total'];
-            chartData = [data.length];
-        }
-
-        this.charts.pie = new Chart(ctx, {
-            type: 'pie',
+        this.charts.traffic = new Chart(ctx, {
+            type: 'doughnut',
             data: {
                 labels,
                 datasets: [{
-                    data: chartData,
+                    data: data,
                     backgroundColor: [
                         'rgba(99, 102, 241, 0.8)',
                         'rgba(16, 185, 129, 0.8)',
                         'rgba(245, 158, 11, 0.8)',
-                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(236, 72, 153, 0.8)',
                         'rgba(139, 92, 246, 0.8)',
-                        'rgba(236, 72, 153, 0.8)'
+                        'rgba(59, 130, 246, 0.8)'
                     ],
                     borderColor: '#1e293b',
                     borderWidth: 2
@@ -416,38 +371,175 @@ class SalesDashboard {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        position: 'right',
-                        labels: { color: '#f1f5f9' }
+                        position: 'bottom',
+                        labels: { 
+                            color: '#f1f5f9',
+                            font: { size: 11 },
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#f1f5f9',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                        borderWidth: 1,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed}%`;
+                            }
+                        }
                     }
                 }
             }
         });
     }
 
+    renderProductsTable() {
+        const products = [
+            { rank: 1, name: 'Premium Wireless Headphones', units: 245, revenue: 12250, trend: 'up' },
+            { rank: 2, name: 'Smart Watch Pro', units: 189, revenue: 9450, trend: 'up' },
+            { rank: 3, name: 'Bluetooth Speaker', units: 156, revenue: 4680, trend: 'stable' },
+            { rank: 4, name: 'USB-C Hub', units: 142, revenue: 2840, trend: 'up' },
+            { rank: 5, name: 'Wireless Charger', units: 138, revenue: 2760, trend: 'down' },
+            { rank: 6, name: 'Phone Case Premium', units: 125, revenue: 1875, trend: 'stable' },
+            { rank: 7, name: 'Screen Protector Pack', units: 118, revenue: 590, trend: 'up' },
+            { rank: 8, name: 'Laptop Stand', units: 98, revenue: 2940, trend: 'up' },
+            { rank: 9, name: 'Webcam HD', units: 87, revenue: 3480, trend: 'stable' },
+            { rank: 10, name: 'Microphone Kit', units: 76, revenue: 3040, trend: 'up' }
+        ];
+
+        const tbody = document.getElementById('products-tbody');
+        tbody.innerHTML = '';
+
+        products.forEach(product => {
+            const row = document.createElement('tr');
+            
+            let trendIcon = '';
+            let trendClass = '';
+            if (product.trend === 'up') {
+                trendIcon = '↑';
+                trendClass = 'trend-up';
+            } else if (product.trend === 'down') {
+                trendIcon = '↓';
+                trendClass = 'trend-down';
+            } else {
+                trendIcon = '→';
+                trendClass = 'trend-stable';
+            }
+
+            row.innerHTML = `
+                <td class="rank">${product.rank}</td>
+                <td class="product-name">${product.name}</td>
+                <td>${product.units}</td>
+                <td>$${product.revenue.toLocaleString()}</td>
+                <td><span class="trend-icon ${trendClass}">${trendIcon}</span></td>
+            `;
+            
+            tbody.appendChild(row);
+        });
+    }
+
     loadDemoData() {
         const demoData = [
-            { date: '2024-01-01', category: 'Electronics', product: 'Laptop', revenue: 1200, quantity: 2 },
-            { date: '2024-01-05', category: 'Clothing', product: 'T-Shirt', revenue: 150, quantity: 5 },
-            { date: '2024-01-10', category: 'Electronics', product: 'Phone', revenue: 800, quantity: 1 },
-            { date: '2024-01-15', category: 'Books', product: 'Novel', revenue: 45, quantity: 3 },
-            { date: '2024-01-20', category: 'Clothing', product: 'Jeans', revenue: 280, quantity: 4 },
-            { date: '2024-01-25', category: 'Electronics', product: 'Tablet', revenue: 600, quantity: 1 },
-            { date: '2024-02-01', category: 'Books', product: 'Textbook', revenue: 120, quantity: 2 },
-            { date: '2024-02-05', category: 'Clothing', product: 'Jacket', revenue: 350, quantity: 2 },
-            { date: '2024-02-10', category: 'Electronics', product: 'Headphones', revenue: 180, quantity: 3 },
-            { date: '2024-02-15', category: 'Books', product: 'Magazine', revenue: 25, quantity: 5 },
-            { date: '2024-02-20', category: 'Electronics', product: 'Smart Watch', revenue: 450, quantity: 1 },
-            { date: '2024-02-25', category: 'Clothing', product: 'Shoes', revenue: 220, quantity: 2 },
-            { date: '2024-03-01', category: 'Electronics', product: 'Camera', revenue: 900, quantity: 1 },
-            { date: '2024-03-05', category: 'Books', product: 'Cookbook', revenue: 35, quantity: 2 },
-            { date: '2024-03-10', category: 'Clothing', product: 'Dress', revenue: 180, quantity: 3 }
+            { date: 'Mon', revenue: 15200 },
+            { date: 'Tue', revenue: 18400 },
+            { date: 'Wed', revenue: 16800 },
+            { date: 'Thu', revenue: 22100 },
+            { date: 'Fri', revenue: 19500 },
+            { date: 'Sat', revenue: 17250 },
+            { date: 'Sun', revenue: 18200 }
         ];
 
         const fileNameSpan = document.getElementById('file-name');
         fileNameSpan.textContent = '📊 Demo Data Loaded';
 
         this.currentData = demoData;
-        this.processAndRenderData(demoData);
+        this.renderDemoCharts();
+        this.renderProductsTable();
+    }
+
+    renderDemoCharts() {
+        const demoData = [
+            { date: 'Mon', revenue: 15200 },
+            { date: 'Tue', revenue: 18400 },
+            { date: 'Wed', revenue: 16800 },
+            { date: 'Thu', revenue: 22100 },
+            { date: 'Fri', revenue: 19500 },
+            { date: 'Sat', revenue: 17250 },
+            { date: 'Sun', revenue: 18200 }
+        ];
+
+        // Sales Trend Chart
+        const ctxLine = document.getElementById('line-chart');
+        if (this.charts.line) {
+            this.charts.line.destroy();
+        }
+
+        this.charts.line = new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: demoData.map(d => d.date),
+                datasets: [{
+                    label: 'Revenue',
+                    data: demoData.map(d => d.revenue),
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#f1f5f9',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `Revenue: $${context.parsed.y.toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: 11 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', display: false }
+                    },
+                    y: {
+                        ticks: { 
+                            color: '#94a3b8',
+                            font: { size: 11 },
+                            callback: function(value) {
+                                return '$' + (value/1000).toFixed(0) + 'K';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+
+        // Generate other charts
+        this.generateFunnelChart();
+        this.generateTrafficChart();
     }
 
     resetToDemo() {
