@@ -135,6 +135,10 @@ window.addEventListener('load', () => {
    Sales Analytics Dashboard
    ============================================ */
 
+// Constants for data type detection
+const CATEGORY_UNIQUENESS_RATIO = 0.5;
+const MAX_CATEGORY_COUNT = 20;
+
 // Demo data to show when no file is uploaded
 const demoData = {
     salesByMonth: {
@@ -395,7 +399,7 @@ function detectColumnTypes(data, fields) {
         }
         
         // Check if it's a number
-        const numberCount = values.filter(v => typeof v === 'number' || !isNaN(parseFloat(v))).length;
+        const numberCount = values.filter(v => v !== '' && (typeof v === 'number' || !isNaN(parseFloat(v)))).length;
         if (numberCount / values.length > 0.8) {
             types[field] = 'number';
             return;
@@ -403,7 +407,7 @@ function detectColumnTypes(data, fields) {
         
         // Check if it's categorical (limited unique values)
         const uniqueValues = new Set(values);
-        if (uniqueValues.size < values.length * 0.5 && uniqueValues.size < 20) {
+        if (uniqueValues.size < values.length * CATEGORY_UNIQUENESS_RATIO && uniqueValues.size < MAX_CATEGORY_COUNT) {
             types[field] = 'category';
             return;
         }
