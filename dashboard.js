@@ -24,6 +24,11 @@ class SalesDashboard {
             if (!this.currentData) {
                 this.loadDemoData();
             }
+            // Auto-scroll to make dashboard visible after modal animation completes
+            const MODAL_ANIMATION_DELAY = 100; // Wait for modal fade-in animation
+            setTimeout(() => {
+                modal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, MODAL_ANIMATION_DELAY);
         });
 
         // Close modal
@@ -231,19 +236,19 @@ class SalesDashboard {
             data: { labels, datasets },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        labels: { color: '#f1f5f9' }
+                        labels: { color: '#f1f5f9', font: { size: 11 } }
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     },
                     y: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     }
                 }
@@ -319,19 +324,19 @@ class SalesDashboard {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        labels: { color: '#f1f5f9' }
+                        labels: { color: '#f1f5f9', font: { size: 11 } }
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     },
                     y: {
-                        ticks: { color: '#94a3b8' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
                         grid: { color: 'rgba(255, 255, 255, 0.05)' }
                     }
                 }
@@ -413,11 +418,11 @@ class SalesDashboard {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'right',
-                        labels: { color: '#f1f5f9' }
+                        labels: { color: '#f1f5f9', font: { size: 10 }, padding: 8 }
                     }
                 }
             }
