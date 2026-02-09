@@ -1242,17 +1242,18 @@ body {
 
 .dashboard-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
 }
 
 .chart-container {
     background: var(--dark);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: var(--transition);
+    max-height: 250px;
 }
 
 .chart-container:hover {
@@ -1261,8 +1262,8 @@ body {
 
 .chart-title {
     color: var(--white);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1270,10 +1271,14 @@ body {
 
 .chart-title::before {
     content: '';
-    width: 4px;
-    height: 20px;
+    width: 3px;
+    height: 16px;
     background: var(--gradient);
     border-radius: 2px;
+}
+
+.chart-container canvas {
+    max-height: 180px;
 }
 
 @keyframes fadeIn {
@@ -1325,11 +1330,12 @@ body {
 
     .dashboard-charts {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1.5rem;
+        gap: 1rem;
+        padding: 1rem;
     }
 
     .chart-container {
-        padding: 1rem;
+        padding: 0.75rem;
+        max-height: 220px;
     }
 }
