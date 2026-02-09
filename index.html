@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -291,10 +293,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="portfolio-card">
+                <div class="portfolio-card" id="sales-dashboard-card" style="cursor: pointer;">
                     <div class="card-image">
                         <div class="card-overlay">
-                            <span class="card-link"><i class="fas fa-lock"></i></span>
+                            <span class="card-link"><i class="fas fa-chart-line"></i></span>
                         </div>
                         <div class="card-icon">
                             <i class="fas fa-chart-bar"></i>
@@ -302,11 +304,11 @@
                     </div>
                     <div class="card-content">
                         <h3>Sales Analytics Dashboard</h3>
-                        <p>Interactive Power BI dashboard providing real-time insights for business decision making, featuring automated data cleaning and preparation.</p>
+                        <p>Interactive dashboard with CSV upload capability. Click to explore and analyze your own data with auto-generated visualizations.</p>
                         <div class="card-tags">
-                            <span>Power BI</span>
-                            <span>SQL</span>
-                            <span>Python</span>
+                            <span>Chart.js</span>
+                            <span>CSV</span>
+                            <span>Analytics</span>
                         </div>
                     </div>
                 </div>
@@ -407,6 +409,52 @@
         </div>
     </footer>
 
+    <!-- Sales Analytics Dashboard Modal -->
+    <div id="dashboard-modal" class="dashboard-modal">
+        <div class="dashboard-modal-content">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-chart-line"></i> Sales Analytics Dashboard</h2>
+                <button class="dashboard-close" id="close-dashboard">&times;</button>
+            </div>
+            
+            <div class="dashboard-controls">
+                <div class="upload-section">
+                    <label for="csv-upload" class="upload-btn btn btn-primary">
+                        <i class="fas fa-upload"></i> Upload CSV
+                    </label>
+                    <input type="file" id="csv-upload" accept=".csv" style="display: none;">
+                    <span id="file-name" class="file-name"></span>
+                </div>
+                <button id="reset-data" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset to Demo Data
+                </button>
+            </div>
+
+            <div id="loading-state" class="loading-state" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing data...</p>
+            </div>
+
+            <div id="error-message" class="error-message" style="display: none;"></div>
+
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3 class="chart-title">Sales Trend</h3>
+                    <canvas id="line-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Sales by Category</h3>
+                    <canvas id="bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Revenue Distribution</h3>
+                    <canvas id="pie-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
