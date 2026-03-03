@@ -20,8 +20,11 @@ class SalesDashboard {
 
         // Open modal
         dashboardCard.addEventListener('click', () => {
+            console.log('Dashboard card clicked');
             modal.classList.add('active');
+            console.log('Modal should be active now');
             if (!this.currentData) {
+                console.log('Loading demo data...');
                 this.loadDemoData();
             }
         });
