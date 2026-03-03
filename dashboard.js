@@ -124,8 +124,9 @@ class SalesDashboard {
 
         // Generate charts based on available data
         this.generateLineChart(data, dateColumn, numericColumns);
-        this.generateFunnelChart();
-        this.generateTrafficChart();
+        this.generateFunnelChart(data);
+        this.generateTrafficChart(data);
+        this.renderProductsTable(data);
     }
 
     detectColumnTypes(data, columns) {
@@ -266,17 +267,53 @@ class SalesDashboard {
         });
     }
 
-    generateFunnelChart() {
+    generateFunnelChart(data) {
         const ctx = document.getElementById('funnel-chart');
         
         if (this.charts.funnel) {
             this.charts.funnel.destroy();
         }
 
-        // Funnel data
-        const labels = ['Visitors', 'Added to Cart', 'Checkout', 'Purchased'];
-        const data = [45000, 6750, 2250, 1440];
-        const percentages = ['100%', '15%', '5%', '3.2%'];
+        // Try to find funnel-related columns from uploaded data
+        let labels = ['Visitors', 'Added to Cart', 'Checkout', 'Purchased'];
+        let dataValues = [45000, 6750, 2250, 1440];
+        
+        if (data && data.length > 0) {
+            const columns = Object.keys(data[0]);
+            
+            // Try to find relevant columns
+            const columnLower = columns.map(c => c.toLowerCase());
+            
+            // Find columns that might match funnel stages
+            const possibleVisitors = columns.find((c, i) => columnLower[i].includes('visitor') || columnLower[i].includes('view') || columnLower[i].includes('impression') || columnLower[i].includes('traffic'));
+            const possibleCart = columns.find((c, i) => columnLower[i].includes('cart') || columnLower[i].includes('add'));
+            const possibleCheckout = columns.find((c, i) => columnLower[i].includes('checkout') || columnLower[i].include('begin'));
+            const possiblePurchase = columns.find((c, i) => columnLower[i].includes('purchas') || columnLower[i].includes('order') || columnLower[i].includes('sale') || columnLower[i].includes('revenue'));
+            
+            if (possibleVisitors || possibleCart || possibleCheckout || possiblePurchase) {
+                // Calculate totals from actual data
+                if (possibleVisitors) {
+                    dataValues[0] = data.reduce((sum, row) => sum + (parseFloat(row[possibleVisitors]) || 0), 0);
+                    labels[0] = possibleVisitors;
+                }
+                if (possibleCart) {
+                    dataValues[1] = data.reduce((sum, row) => sum + (parseFloat(row[possibleCart]) || 0), 0);
+                    labels[1] = possibleCart;
+                }
+                if (possibleCheckout) {
+                    dataValues[2] = data.reduce((sum, row) => sum + (parseFloat(row[possibleCheckout]) || 0), 0);
+                    labels[2] = possibleCheckout;
+                }
+                if (possiblePurchase) {
+                    dataValues[3] = data.reduce((sum, row) => sum + (parseFloat(row[possiblePurchase]) || 0), 0);
+                    labels[3] = possiblePurchase;
+                }
+            }
+        }
+
+        // Calculate percentages
+        const maxValue = dataValues[0] || 1;
+        const percentages = dataValues.map(v => ((v / maxValue) * 100).toFixed(1) + '%');
 
         this.charts.funnel = new Chart(ctx, {
             type: 'bar',
@@ -284,7 +321,7 @@ class SalesDashboard {
                 labels: labels.map((label, i) => `${label} (${percentages[i]})`),
                 datasets: [{
                     label: 'Users',
-                    data: data,
+                    data: dataValues,
                     backgroundColor: [
                         'rgba(99, 102, 241, 0.9)',
                         'rgba(99, 102, 241, 0.7)',
@@ -338,22 +375,52 @@ class SalesDashboard {
         });
     }
 
-    generateTrafficChart() {
+    generateTrafficChart(data) {
         const ctx = document.getElementById('traffic-chart');
         
         if (this.charts.traffic) {
             this.charts.traffic.destroy();
         }
 
-        const labels = ['Direct', 'Organic Search', 'Paid Ads', 'Social Media', 'Email', 'Referral'];
-        const data = [35, 28, 18, 12, 5, 2];
+        // Try to find traffic-related columns from uploaded data
+        let labels = ['Direct', 'Organic Search', 'Paid Ads', 'Social Media', 'Email', 'Referral'];
+        let dataValues = [35, 28, 18, 12, 5, 2];
+        
+        if (data && data.length > 0) {
+            const columns = Object.keys(data[0]);
+            const columnLower = columns.map(c => c.toLowerCase());
+            
+            // Try to find traffic source columns
+            const sourceColumns = columns.filter((c, i) => 
+                columnLower[i].includes('source') || 
+                columnLower[i].includes('channel') || 
+                columnLower[i].includes('traffic') ||
+                columnLower[i].includes('medium')
+            );
+            
+            if (sourceColumns.length > 0) {
+                // Aggregate by traffic source
+                const sourceData = {};
+                sourceColumns.forEach(col => {
+                    sourceData[col] = data.reduce((sum, row) => sum + (parseFloat(row[col]) || 0), 0);
+                });
+                
+                // Sort by value and take top 6
+                const sorted = Object.entries(sourceData)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 6);
+                
+                labels = sorted.map(([k, v]) => k);
+                dataValues = sorted.map(([k, v]) => v);
+            }
+        }
 
         this.charts.traffic = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels,
                 datasets: [{
-                    data: data,
+                    data: dataValues,
                     backgroundColor: [
                         'rgba(99, 102, 241, 0.8)',
                         'rgba(16, 185, 129, 0.8)',
@@ -397,8 +464,44 @@ class SalesDashboard {
         });
     }
 
-    renderProductsTable() {
-        const products = [
+    renderProductsTable(data) {
+        // Try to find product-related data from uploaded CSV
+        let products = [];
+        
+        if (data && data.length > 0) {
+            const columns = Object.keys(data[0]);
+            const columnLower = columns.map(c => c.toLowerCase());
+            
+            // Try to find product name and revenue columns
+            const nameCol = columns.find((c, i) => columnLower[i].includes('product') || columnLower[i].includes('item') || columnLower[i].includes('name') || columnLower[i].includes('sku'));
+            const revenueCol = columns.find((c, i) => columnLower[i].includes('revenue') || columnLower[i].includes('sales') || columnLower[i].includes('total'));
+            const qtyCol = columns.find((c, i) => columnLower[i].includes('quantity') || columnLower[i].includes('unit') || columnLower[i].includes('sold') || columnLower[i].includes('qty'));
+            
+            if (nameCol || revenueCol) {
+                // Aggregate data by product
+                const productData = {};
+                data.forEach(row => {
+                    const name = nameCol ? row[nameCol] : 'Unknown Product';
+                    const revenue = revenueCol ? (parseFloat(row[revenueCol]) || 0) : 0;
+                    const qty = qtyCol ? (parseFloat(row[qtyCol]) || 0) : 1;
+                    
+                    if (!productData[name]) {
+                        productData[name] = { revenue: 0, units: 0 };
+                    }
+                    productData[name].revenue += revenue;
+                    productData[name].units += qty;
+                });
+                
+                // Convert to array and sort by revenue
+                products = Object.entries(productData)
+                    .map(([name, vals], i) => ({ rank: i + 1, name, ...vals }))
+                    .sort((a, b) => b.revenue - a.revenue)
+                    .slice(0, 10);
+            }
+        }
+        
+        // Fallback to demo data if no products found
+        if (products.length === 0) {
             { rank: 1, name: 'Premium Wireless Headphones', units: 245, revenue: 12250, trend: 'up' },
             { rank: 2, name: 'Smart Watch Pro', units: 189, revenue: 9450, trend: 'up' },
             { rank: 3, name: 'Bluetooth Speaker', units: 156, revenue: 4680, trend: 'stable' },
@@ -410,6 +513,8 @@ class SalesDashboard {
             { rank: 9, name: 'Webcam HD', units: 87, revenue: 3480, trend: 'stable' },
             { rank: 10, name: 'Microphone Kit', units: 76, revenue: 3040, trend: 'up' }
         ];
+        }
+        }
 
         const tbody = document.getElementById('products-tbody');
         tbody.innerHTML = '';
