@@ -1126,9 +1126,10 @@ body {
 .dashboard-modal-content {
     background: var(--dark-light);
     width: 95%;
-    max-width: 1400px;
+    max-width: 1200px;
     max-height: 90vh;
     overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: var(--shadow-lg);
@@ -1242,17 +1243,25 @@ body {
 
 .dashboard-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    overflow-x: hidden;
 }
 
 .chart-container {
     background: var(--dark);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: var(--transition);
+    min-width: 0;
+    overflow: hidden;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    height: auto !important;
 }
 
 .chart-container:hover {

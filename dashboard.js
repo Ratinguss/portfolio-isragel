@@ -237,7 +237,7 @@ class SalesDashboard {
             data: { labels, datasets },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -299,7 +299,7 @@ class SalesDashboard {
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -368,7 +368,7 @@ class SalesDashboard {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'bottom',
@@ -498,7 +498,7 @@ class SalesDashboard {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
