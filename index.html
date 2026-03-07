@@ -422,7 +422,7 @@
                     <label for="csv-upload" class="upload-btn btn btn-primary">
                         <i class="fas fa-upload"></i> Upload CSV
                     </label>
-                    <input type="file" id="csv-upload" accept=".csv" style="display: none;">
+                    <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="if(this.files[0]){console.log('File selected:', this.files[0].name); window.salesDashboard.handleFileUpload(this.files[0]);}">
                     <span id="file-name" class="file-name"></span>
                 </div>
                 <button id="reset-data" class="btn btn-secondary">
