@@ -698,5 +698,5 @@ class SalesDashboard {
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new SalesDashboard();
+    window.salesDashboard = new SalesDashboard();
 });
