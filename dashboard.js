@@ -522,10 +522,6 @@ class SalesDashboard {
             { rank: 6, name: 'Phone Case Premium', units: 125, revenue: 1875, trend: 'stable' },
             { rank: 7, name: 'Screen Protector Pack', units: 118, revenue: 590, trend: 'up' },
             { rank: 8, name: 'Laptop Stand', units: 98, revenue: 2940, trend: 'up' },
-            { rank: 9, name: 'Webcam HD', units: 87, revenue: 3480, trend: 'stable' },
-            { rank: 10, name: 'Microphone Kit', units: 76, revenue: 3040, trend: 'up' }
-            ];
-        }
         ];
         }
         }
@@ -537,9 +533,6 @@ class SalesDashboard {
             const row = document.createElement('tr');
             
             let trendIcon = '';
-            let trendClass = '';
-            if (product.trend === 'up') {
-                trendIcon = '↑';
                 trendClass = 'trend-up';
             } else if (product.trend === 'down') {
                 trendIcon = '↓';
