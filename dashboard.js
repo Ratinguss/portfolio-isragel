@@ -1,4 +1,4 @@
-// Sales Dashboard - Simple Version
+// Sales Dashboard - Clean Version
 class SalesDashboard {
     constructor() {
         this.currentData = null;
@@ -7,7 +7,7 @@ class SalesDashboard {
     }
 
     init() {
-        console.log("SalesDashboard initializing");
+        console.log("Dashboard initializing");
         this.setupEventListeners();
     }
 
