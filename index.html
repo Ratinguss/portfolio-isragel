@@ -293,7 +293,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="portfolio-card" id="sales-dashboard-card" style="cursor: pointer;">
+                <div class="portfolio-card" id="sales-dashboard-card" style="cursor: pointer;" onclick="document.getElementById('dashboard-modal').classList.add('active'); if(window.salesDashboard && !window.salesDashboard.currentData) { window.salesDashboard.loadDemoData(); }">
                     <div class="card-image">
                         <div class="card-overlay">
                             <span class="card-link"><i class="fas fa-chart-line"></i></span>
