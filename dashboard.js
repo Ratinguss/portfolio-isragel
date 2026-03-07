@@ -1,4 +1,4 @@
-// Sales Dashboard - Fixed Version
+// Sales Dashboard - Intelligent Auto-Detection Version
 class SalesDashboard {
     constructor() {
         this.currentData = null;
@@ -74,26 +74,63 @@ class SalesDashboard {
         this.renderData();
     }
 
+    // Auto-detect column types
+    detectColumnTypes(data) {
+        var cols = Object.keys(data[0]);
+        var result = {
+            numeric: [],
+            text: [],
+            date: []
+        };
+        
+        cols.forEach(function(col) {
+            var isNumeric = true;
+            var isDate = true;
+            var sample = data.slice(0, 10).map(function(row) { return row[col]; });
+            
+            sample.forEach(function(val) {
+                if (isNumeric && isNaN(parseFloat(String(val).replace(/[^0-9.-]/g, "")))) isNumeric = false;
+                if (isDate && isNaN(Date.parse(val))) isDate = false;
+            });
+            
+            if (isNumeric) result.numeric.push(col);
+            else if (isDate) result.date.push(col);
+            else result.text.push(col);
+        });
+        
+        console.log("Column types:", result);
+        return result;
+    }
+
+    // Find specific columns
+    findColumn(data, keywords) {
+        var cols = Object.keys(data[0]);
+        return cols.find(function(c) {
+            var lower = c.toLowerCase();
+            return keywords.some(function(kw) { return lower.includes(kw); });
+        });
+    }
+
     renderData() {
         if (!this.currentData || this.currentData.length === 0) return;
         
         console.log("Rendering data...");
+        
+        var colTypes = this.detectColumnTypes(this.currentData);
+        
         this.updateKPIs();
+        this.autoGenerateCharts(colTypes);
         this.updateTable();
     }
 
     updateKPIs() {
         var data = this.currentData;
-        var cols = Object.keys(data[0]);
-        console.log("Columns:", cols);
         
-        // Find revenue column (case insensitive)
-        var revCol = cols.find(function(c) { 
-            var lower = c.toLowerCase();
-            return lower.includes("revenue") || lower.includes("sales") || lower.includes("total") || lower.includes("amount");
-        });
+        // Find key metrics
+        var revCol = this.findColumn(data, ["revenue", "sales", "total", "amount", "gross"]);
+        var qtyCol = this.findColumn(data, ["quantity", "qty", "units", "orders", "count"]);
         
-        console.log("Revenue column:", revCol);
+        console.log("Revenue column:", revCol, "Quantity column:", qtyCol);
         
         if (revCol) {
             var total = 0;
@@ -101,9 +138,64 @@ class SalesDashboard {
                 var val = parseFloat(String(row[revCol]).replace(/[^0-9.-]/g, "")) || 0;
                 total += val;
             });
-            
             var el = document.getElementById("total-revenue");
             if (el) el.textContent = "$" + total.toLocaleString();
+        }
+        
+        if (qtyCol) {
+            var total = 0;
+            data.forEach(function(row) {
+                var val = parseFloat(String(row[qtyCol]).replace(/[^0-9.-]/g, "")) || 0;
+                total += val;
+            });
+            // Try to find orders count element
+            var els = document.querySelectorAll("[id*=order], [id*=count], [id*=quantity]");
+            if (els.length > 0) {
+                els[0].textContent = total.toLocaleString();
+            }
+        }
+    }
+
+    autoGenerateCharts(colTypes) {
+        var data = this.currentData;
+        var self = this;
+        
+        // Try to find date column for timeline chart
+        var dateCol = this.findColumn(data, ["date", "day", "month", "year", "time", "created"]);
+        
+        // Find numeric columns for charts
+        var numericCols = colTypes.numeric.slice(0, 4); // Limit to 4
+        
+        console.log("Date column:", dateCol, "Numeric columns:", numericCols);
+        
+        // Create a simple bar chart using canvas if Chart.js available
+        if (typeof Chart !== 'undefined' && numericCols.length > 0) {
+            // Bar chart for first numeric column
+            var labels = data.slice(0, 20).map(function(row, i) { return "Row " + (i+1); });
+            var values = data.slice(0, 20).map(function(row) { 
+                return parseFloat(String(row[numericCols[0]]).replace(/[^0-9.-]/g, "")) || 0; 
+            });
+            
+            // Try to find or create canvas for bar chart
+            var canvas = document.getElementById("revenue-chart");
+            if (canvas) {
+                if (this.charts.bar) this.charts.bar.destroy();
+                this.charts.bar = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: numericCols[0],
+                            data: values,
+                            backgroundColor: '#00d4ff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
         }
     }
 
@@ -115,27 +207,33 @@ class SalesDashboard {
             return;
         }
         
-        var cols = Object.keys(data[0]);
+        // Auto-detect product/name column
+        var nameCol = this.findColumn(data, ["product", "item", "name", "sku", "title", "productname"]);
+        var revCol = this.findColumn(data, ["revenue", "sales", "total", "amount", "gross"]);
         
-        // Find product and revenue columns
-        var nameCol = cols.find(function(c) { 
-            var lower = c.toLowerCase();
-            return lower.includes("product") || lower.includes("item") || lower.includes("name");
-        });
-        
-        var revCol = cols.find(function(c) { 
-            var lower = c.toLowerCase();
-            return lower.includes("revenue") || lower.includes("sales") || lower.includes("total") || lower.includes("amount");
-        });
-        
-        console.log("Name column:", nameCol, "Revenue column:", revCol);
+        console.log("Table - Name column:", nameCol, "Revenue column:", revCol);
         
         if (!nameCol || !revCol) {
-            tbody.innerHTML = "<tr><td colspan=4>Columns not found! Check console.</td></tr>";
-            console.log("Missing columns - name:", nameCol, "rev:", revCol);
+            // Show all columns as table
+            var cols = Object.keys(data[0]);
+            var sampleRows = data.slice(0, 10);
+            var html = "";
+            cols.forEach(function(col) {
+                html += "<th>" + col + "</th>";
+            });
+            html = "<tr>" + html + "</tr>";
+            sampleRows.forEach(function(row) {
+                html += "<tr>";
+                cols.forEach(function(col) {
+                    html += "<td>" + row[col] + "</td>";
+                });
+                html += "</tr>";
+            });
+            tbody.innerHTML = html;
             return;
         }
         
+        // Aggregate by product
         var products = {};
         data.forEach(function(row) {
             var name = row[nameCol] || "Unknown";
