@@ -513,6 +513,7 @@ class SalesDashboard {
         
         // Fallback to demo data if no products found
         if (products.length === 0) {
+            products = [
             { rank: 1, name: 'Premium Wireless Headphones', units: 245, revenue: 12250, trend: 'up' },
             { rank: 2, name: 'Smart Watch Pro', units: 189, revenue: 9450, trend: 'up' },
             { rank: 3, name: 'Bluetooth Speaker', units: 156, revenue: 4680, trend: 'stable' },
@@ -523,6 +524,8 @@ class SalesDashboard {
             { rank: 8, name: 'Laptop Stand', units: 98, revenue: 2940, trend: 'up' },
             { rank: 9, name: 'Webcam HD', units: 87, revenue: 3480, trend: 'stable' },
             { rank: 10, name: 'Microphone Kit', units: 76, revenue: 3040, trend: 'up' }
+            ];
+        }
         ];
         }
         }
