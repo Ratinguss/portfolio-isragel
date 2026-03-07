@@ -43,8 +43,10 @@ class SalesDashboard {
 
         // File upload
         uploadInput.addEventListener('change', (e) => {
+            console.log('File input changed', e);
             const file = e.target.files[0];
             if (file) {
+                console.log('Uploading file:', file.name);
                 this.handleFileUpload(file);
             }
         });
@@ -78,10 +80,12 @@ class SalesDashboard {
 
     handleFileUpload(file) {
         if (!file.name.endsWith('.csv')) {
+            console.log('Not a CSV file:', file.name);
             this.showError('Please upload a valid CSV file');
             return;
         }
 
+        console.log('Processing CSV file:', file.name);
         const fileNameSpan = document.getElementById('file-name');
         fileNameSpan.textContent = `📄 ${file.name}`;
         
@@ -92,7 +96,9 @@ class SalesDashboard {
             dynamicTyping: true,
             skipEmptyLines: true,
             complete: (results) => {
+                console.log('Parse complete, rows:', results.data.length);
                 if (results.errors.length > 0) {
+                    console.log('Parse errors:', results.errors);
                     this.showError('Error parsing CSV file. Please check the file format.');
                     this.showLoading(false);
                     return;
@@ -104,12 +110,14 @@ class SalesDashboard {
                     return;
                 }
 
+                console.log('Rendering data with', results.data.length, 'rows');
                 this.currentData = results.data;
                 this.saveToStorage(this.currentData, file.name);
                 this.processAndRenderData(this.currentData);
                 this.showLoading(false);
             },
             error: (error) => {
+                console.log('Parse error:', error);
                 this.showError('Failed to parse CSV file: ' + error.message);
                 this.showLoading(false);
             }
