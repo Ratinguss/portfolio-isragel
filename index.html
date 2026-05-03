@@ -82,6 +82,46 @@
         </div>
     </section>
 
+    <!-- n8n Workflow Preview Section -->
+    <section class="n8n-preview">
+        <div class="container n8n-preview-content">
+            <div class="n8n-preview-header">
+                <h2 class="n8n-title">
+                    n8n Workflow - 
+                    <span class="highlight">AI UGC AD AUTOMATION</span>
+                </h2>
+                <p class="n8n-subtitle">Watch how AI-powered automation generates UGC ads automatically</p>
+            </div>
+
+            <div class="n8n-video-wrapper">
+                <iframe 
+                    src="https://drive.google.com/file/d/1nbFRcUx8PZVMcgxEbAQ9sEFRnGK4hn4z/preview" 
+                    allow="autoplay" 
+                    allowfullscreen
+                    title="n8n AI UGC AD AUTOMATION Workflow">
+                </iframe>
+            </div>
+
+            <div class="n8n-features">
+                <div class="feature-item">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <h4>AI-Powered Generation</h4>
+                    <p>Automatically generate high-quality UGC ads using advanced AI models</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Workflow Automation</h4>
+                    <p>End-to-end automation with n8n workflow orchestration</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Performance Tracking</h4>
+                    <p>Monitor and analyze ad performance metrics in real-time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
@@ -293,7 +333,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="portfolio-card" id="sales-dashboard-card" style="cursor: pointer;" onclick="document.getElementById('dashboard-modal').classList.add('active'); if(window.salesDashboard && !window.salesDashboard.currentData) { window.salesDashboard.loadDemoData(); }">
+                <div class="portfolio-card" id="sales-dashboard-card" style="cursor: pointer;" onclick="document.getElementById('dashboard-modal').classList.add('active'); if(window.salesDashboard && !window.salesDashboard.initialized) window.salesDashboard.init();">
                     <div class="card-image">
                         <div class="card-overlay">
                             <span class="card-link"><i class="fas fa-chart-line"></i></span>
@@ -532,4 +572,4 @@
         window.salesDashboard = new SalesDashboard();
     </script>
 </body>
-</html><!-- cache refresh Sat Mar  7 11:37:27 UTC 2026 -->
+</html>
