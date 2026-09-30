@@ -3,82 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isragel Andres | AI Automation Specialist</title>
+    <title>Isragel Andres — AI Automation & Data Pipelines</title>
+    <meta name="description" content="Isragel Andres — AI automation specialist building production workflows with n8n, LLMs, and modern data tooling.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <span class="logo-text">IA</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+
+    <!-- ── Nav ─────────────────────────────────────────── -->
+    <header class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#top" class="nav-brand">IA<span class="accent">.</span></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="nav-right">
+                <a href="mailto:isragelandres000@gmail.com" class="btn btn-sm">Hire me</a>
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                    <span></span><span></span>
+                </button>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <p class="hero-subtitle">Hello, I'm</p>
-                <h1 class="hero-title">Isragel Andres</h1>
-                <h2 class="hero-role">AI Automation Specialist</h2>
-                <p class="hero-description">
-                    Designing and deploying AI-powered workflows, building full-stack automation tools, 
-                    and developing scalable data pipelines. Transforming business processes through intelligent automation.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#portfolio" class="btn btn-primary">View My Work</a>
-                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-                    <a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Preview Drive Folder</a>
-                </div>
-                <div class="hero-social">
-                    <a href="mailto:isragelandres000@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
-                    <a href="https://github.com/Ratinguss" class="social-link"><i class="fab fa-github"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="hero-shape">
-                    <div class="shape-inner">
-                        <i class="fas fa-robot"></i>
+    <main id="top">
+
+        <!-- ── Hero ────────────────────────────────────── -->
+        <section class="hero section">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <p class="eyebrow reveal">Isragel Andres — AI Automation Specialist</p>
+                        <h1 class="reveal d1">
+                            Automating the busywork<br>
+                            <span class="muted">out of business operations.</span>
+                        </h1>
+                        <p class="lede reveal d2">
+                            I design and ship production-grade automation: n8n workflow systems,
+                            LLM integrations, and data pipelines that turn manual, error-prone
+                            processes into ones that run themselves.
+                        </p>
+                        <div class="hero-actions reveal d3">
+                            <a href="#projects" class="btn">View projects</a>
+                            <a href="mailto:isragelandres000@gmail.com" class="btn btn-ghost">Get in touch</a>
+                        </div>
+                        <ul class="hero-facts reveal d4">
+                            <li>Based in the Philippines</li>
+                            <li>Freelance · Full-time</li>
+                            <li>Open to remote work</li>
+                        </ul>
+                    </div>
+                    <div class="hero-terminal reveal d3">
+                        <div class="terminal">
+                            <div class="terminal-bar">
+                                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                                <span class="terminal-title">n8n — workflow.status</span>
+                            </div>
+                            <pre class="terminal-body"><code><span class="c-prompt">$</span> workflows list --env production
+
+  <span class="c-ok">✔</span> lead-enrichment       <span class="c-dim">running · every 15m</span>
+  <span class="c-ok">✔</span> invoice-sync          <span class="c-dim">running · every 1h</span>
+  <span class="c-ok">✔</span> crm-llm-classifier    <span class="c-dim">running · webhook</span>
+  <span class="c-ok">✔</span> analytics-pipeline    <span class="c-dim">running · nightly</span>
+
+<span class="c-prompt">$</span> metrics --last 30d
+
+  executions    <span class="c-accent">12,480</span>   <span class="c-dim">↑ 94%</span>
+  error rate    <span class="c-accent">0.02%</span>
+  hours saved   <span class="c-accent">~310 / mo</span>
+  uptime        <span class="c-accent">99.98%</span>
+
+<span class="c-prompt">$</span> <span class="cursor"></span></code></pre>
+                        </div>
                     </div>
                 </div>
-                <div class="floating-card card-1">
-                    <i class="fas fa-code"></i>
-                    <span>n8n Workflows</span>
+            </div>
+        </section>
+
+        <!-- ── About ───────────────────────────────────── -->
+        <section class="section" id="about">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">01 — About</p>
+                    <h2>Automation that ships, not demos that stall.</h2>
                 </div>
-                <div class="floating-card card-2">
-                    <i class="fas fa-brain"></i>
-                    <span>AI Integration</span>
-                </div>
-                <div class="floating-card card-3">
-                    <i class="fas fa-database"></i>
-                    <span>Data Pipelines</span>
+                <div class="about-grid">
+                    <div class="about-text reveal">
+                        <p>
+                            I build the connective tissue between tools that were never designed
+                            to talk to each other — CRMs, spreadsheets, email, LLMs, and internal
+                            APIs — so teams stop copying data between tabs and start trusting
+                            their systems.
+                        </p>
+                        <p>
+                            My work sits at the intersection of workflow engineering and applied AI:
+                            reliable n8n architectures, careful prompt and integration design, and
+                            the unglamorous parts (retries, monitoring, edge cases) that make the
+                            difference between a demo and a system people depend on.
+                        </p>
+                        <a class="text-link" href="https://github.com/Ratinguss" target="_blank" rel="noopener">
+                            See my code on GitHub →
+                        </a>
+                    </div>
+                    <ul class="about-facts reveal d1">
+                        <li><span>Focus</span><strong>AI automation · data pipelines</strong></li>
+                        <li><span>Core stack</span><strong>n8n · Python · LLM APIs</strong></li>
+                        <li><span>Currently</span><strong>Available for new work</strong></li>
+                        <li><span>Materials</span><strong><a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" target="_blank" rel="noopener">Drive folder →</a></strong></li>
+                    </ul>
                 </div>
             </div>
+        </section>
+
+        <!-- ── Experience ──────────────────────────────── -->
+        <section class="section section-alt" id="experience">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">02 — Experience</p>
+                    <h2>Where I've worked.</h2>
+                </div>
+
+                <ol class="timeline">
+                    <li class="timeline-item reveal">
+                        <div class="timeline-meta">
+                            <span class="timeline-when">2023 — Present</span>
+                            <span class="timeline-badge">Current</span>
+                        </div>
+                        <div class="timeline-body">
+                            <h3>AI Automation Specialist</h3>
+                            <p class="timeline-org">Freelance / Contract · Remote</p>
+                            <ul class="ticks">
+                                <li>Design and maintain n8n workflow systems for lead management, invoicing, and reporting.</li>
+                                <li>Integrate LLM APIs into business processes — classification, extraction, summarization, and agent-style tooling.</li>
+                                <li>Build data pipelines that consolidate scattered sources into clean, queryable stores.</li>
+                            </ul>
+                            <div class="tags">
+                                <span>n8n</span><span>OpenAI API</span><span>Python</span><span>Webhooks</span><span>REST</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="timeline-item reveal d1">
+                        <div class="timeline-meta">
+                            <span class="timeline-when">2021 — 2023</span>
+                        </div>
+                        <div class="timeline-body">
+                            <h3>Data & Operations Analyst</h3>
+                            <p class="timeline-org">Various clients · Remote</p>
+                            <ul class="ticks">
+                                <li>Built dashboards and reporting automation replacing hours of weekly manual spreadsheet work.</li>
+                                <li>Cleaned and unified messy datasets from CRM, marketing, and sales systems.</li>
+                                <li>Documented processes and trained client teams to maintain their own automations.</li>
+                            </ul>
+                            <div class="tags">
+                                <span>SQL</span><span>Google Sheets</span><span>Chart.js</span><span>Data QA</span>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ── Projects ────────────────────────────────── -->
+        <section class="section" id="projects">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">03 — Selected work</p>
+                    <h2>Projects.</h2>
+                </div>
+
+                <div class="projects-grid">
+                    <article class="project-card reveal">
+                        <div class="project-top">
+                            <span class="project-num">01</span>
+                            <div class="project-links">
+                                <a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" target="_blank" rel="noopener" aria-label="View project">↗</a>
+                            </div>
+                        </div>
+                        <h3>Lead Enrichment & Routing Pipeline</h3>
+                        <p>
+                            Inbound leads are enriched, scored, and routed automatically via n8n —
+                            deduped against the CRM, classified by an LLM, and assigned to the right
+                            rep within minutes instead of days.
+                        </p>
+                        <div class="tags">
+                            <span>n8n</span><span>LLM API</span><span>CRM webhooks</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card reveal d1">
+                        <div class="project-top">
+                            <span class="project-num">02</span>
+                            <div class="project-links">
+                                <a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" target="_blank" rel="noopener" aria-label="View project">↗</a>
+                            </div>
+                        </div>
+                        <h3>Invoice & Payment Sync System</h3>
+                        <p>
+                            Hourly reconciliation between invoicing, payments, and accounting —
+                            with failure alerts, retry logic, and a clean audit trail for every
+                            automated action.
+                        </p>
+                        <div class="tags">
+                            <span>Workflow design</span><span>REST APIs</span><span>Error handling</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card reveal d2">
+                        <div class="project-top">
+                            <span class="project-num">03</span>
+                            <div class="project-links">
+                                <a href="https://github.com/Ratinguss" target="_blank" rel="noopener" aria-label="View on GitHub">↗</a>
+                            </div>
+                        </div>
+                        <h3>CSV-to-Dashboard Analytics Tool</h3>
+                        <p>
+                            A browser-based tool that ingests raw sales CSVs and renders live KPI
+                            dashboards — auto-detecting columns, aggregating revenue, and charting
+                            trends with no backend required.
+                        </p>
+                        <div class="tags">
+                            <span>JavaScript</span><span>Chart.js</span><span>Papa Parse</span>
+                        </div>
+                    </article>
+                </div>
+
+                <p class="projects-note reveal">
+                    Workflow walkthroughs, screenshots, and source materials are in my
+                    <a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" target="_blank" rel="noopener" class="text-link">Drive folder</a>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ── Contact ─────────────────────────────────── -->
+        <section class="section section-alt" id="contact">
+            <div class="container contact-inner">
+                <div class="section-head reveal">
+                    <p class="eyebrow">04 — Contact</p>
+                    <h2>Let's automate something.</h2>
+                </div>
+                <p class="contact-lede reveal d1">
+                    Have a process that eats your team's time? Send me a short description —
+                    I'll reply with how I'd approach it.
+                </p>
+                <div class="contact-actions reveal d2">
+                    <a href="mailto:isragelandres000@gmail.com?subject=Automation%20project%20inquiry" class="btn btn-lg">
+                        isragelandres000@gmail.com
+                    </a>
+                    <div class="contact-links">
+                        <a href="https://github.com/Ratinguss" target="_blank" rel="noopener">GitHub</a>
+                        <span class="sep">·</span>
+                        <a href="https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing" target="_blank" rel="noopener">Drive materials</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── Footer ──────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <span>© 2026 Isragel Andres</span>
+            <a href="#top">Back to top ↑</a>
         </div>
-        <div class="scroll-indicator">
-            <div class="mouse"></div>
-            <span>Scroll Down</span>
-        </div>
-    </section>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

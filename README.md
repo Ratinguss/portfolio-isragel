@@ -1,15 +1,22 @@
-# portfolio-isragel
+# Portfolio — Isragel Andres
 
-Welcome to my portfolio website! This project showcases my work and projects.
+Personal portfolio site. Built with plain HTML/CSS/JS — no build step.
 
-## 📁 Portfolio Content
+**Live:** https://ratinguss.github.io/portfolio-isragel/
 
-You can preview and watch the content of my portfolio materials through the following link:
+## Sections
 
-🔗 **[View Portfolio Drive Folder](https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing)** (Anyone with link access)
+- Hero with terminal-style metrics card
+- About
+- Experience timeline
+- Selected projects
+- Contact (mailto)
 
-This folder contains additional resources, previews, and materials related to my portfolio projects.
+## Portfolio materials
+
+Workflow walkthroughs, screenshots, and source materials:
+[View Drive folder](https://drive.google.com/drive/folders/1DUwKrlzdLEADhfd2uutTLlIQ7sy5kV2r?usp=sharing) (anyone with link)
 
 ---
 
-Built with HTML, CSS, and JavaScript.
+To run locally: open `index.html` in a browser.
