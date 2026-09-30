@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
 </head>
 <body>
 
@@ -236,19 +238,49 @@
                         <div class="project-top">
                             <span class="project-num">03</span>
                             <div class="project-links">
-                                <a href="https://github.com/Ratinguss" target="_blank" rel="noopener" aria-label="View on GitHub">↗</a>
+                                <a href="#demo" aria-label="Try the demo">↗</a>
                             </div>
                         </div>
                         <h3>CSV-to-Dashboard Analytics Tool</h3>
                         <p>
-                            A browser-based tool that ingests raw sales CSVs and renders live KPI
-                            dashboards — auto-detecting columns, aggregating revenue, and charting
-                            trends with no backend required.
+                            Drop any CSV and get an instant KPI dashboard — auto-detected columns,
+                            aggregated metrics, trend charts, and a sortable table. Fully in-browser,
+                            no backend. Try it below with the sample dataset.
                         </p>
                         <div class="tags">
                             <span>JavaScript</span><span>Chart.js</span><span>Papa Parse</span>
                         </div>
                     </article>
+                </div>
+
+                <!-- ── Live demo ──────────────────────── -->
+                <div class="demo reveal" id="demo">
+                    <div class="demo-head">
+                        <div>
+                            <h3>Live demo</h3>
+                            <p class="demo-sub">Drop a CSV, or load the sample ad-campaign dataset.</p>
+                        </div>
+                        <div class="demo-actions">
+                            <button class="btn btn-sm" id="loadSample">Load sample data</button>
+                            <label class="btn btn-sm btn-ghost" for="csvInput">Upload CSV</label>
+                            <input type="file" id="csvInput" accept=".csv,text/csv" hidden>
+                        </div>
+                    </div>
+
+                    <div class="demo-drop" id="demoDrop">
+                        <p>Drag &amp; drop a CSV here</p>
+                    </div>
+
+                    <div class="demo-body" id="demoBody" hidden>
+                        <div class="kpi-row" id="kpiRow"></div>
+                        <div class="demo-grid">
+                            <div class="chart-box"><canvas id="trendChart"></canvas></div>
+                            <div class="chart-box"><canvas id="catChart"></canvas></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table class="demo-table" id="demoTable"></table>
+                        </div>
+                    </div>
                 </div>
 
                 <p class="projects-note reveal">

@@ -509,6 +509,154 @@ h3 { font-size: 1.125rem; }
     color: var(--text-faint);
 }
 
+/* ── Live demo (CSV dashboard) ──────────────────────── */
+
+.demo {
+    margin-top: 1.5rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+.demo-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.demo-head h3 { font-size: 1.05rem; margin-bottom: 0.15rem; }
+
+.demo-sub {
+    font-size: 0.85rem;
+    color: var(--text-faint);
+}
+
+.demo-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.demo-drop {
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 0.875rem;
+    font-family: var(--mono);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.demo-drop.dragging {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.demo-drop[hidden] { display: none; }
+
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.kpi {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+}
+
+.kpi-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.3rem;
+}
+
+.kpi-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.chart-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    min-height: 240px;
+    position: relative;
+}
+
+.chart-box canvas { max-height: 260px; }
+
+.table-wrap {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.demo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.demo-table th,
+.demo-table td {
+    padding: 0.55rem 0.9rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.demo-table th {
+    position: sticky;
+    top: 0;
+    background: var(--bg-raised);
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.demo-table th:hover { color: var(--accent); }
+
+.demo-table td {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.demo-table tbody tr:last-child td { border-bottom: none; }
+.demo-table tbody tr:hover { background: var(--accent-soft); }
+
+.demo-table td.num, .demo-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 960px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .demo-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Contact ────────────────────────────────────────── */
 
 .contact-inner { max-width: 640px; }
